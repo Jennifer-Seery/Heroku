@@ -1,9 +1,14 @@
 import os
+import dj_database_url
+from django.conf.global_settings import STATICFILES_DIRS, STATIC_ROOT, STATICFILES_STORAGE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4akpr@m-$u*9da!-do0f^5xcj6o&-6lyezp93nyno*55n$pbn#'
 DEBUG = True
 ALLOWED_HOSTS = []
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,6 +20,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'students.apps.StudentsConfig',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,3 +81,18 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
+
+
+# Added for Heroku
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+#ERROR MIGHT OCCUR HERE
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+        os.path.join(BASE_DIR,"static")
+    ]
+STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
